@@ -23,7 +23,9 @@ export default async function BrowseLayout({ children }: BrowseLayoutProps) {
       </aside>
       <div className="flex min-w-0 flex-1 flex-col">
         <SiteHeader />
-        <main className="mx-auto w-full max-w-4xl flex-1 px-6 py-6">{children}</main>
+        {/* Design Ref: note-toc §5.1 — 노트 상세 페이지가 우측 TOC 패널을 위해 자체
+            컨테이너 폭을 정의하므로, 여기서는 max-w를 강제하지 않는다. */}
+        <main className="min-w-0 flex-1 px-6 py-6">{children}</main>
       </div>
     </div>
   )

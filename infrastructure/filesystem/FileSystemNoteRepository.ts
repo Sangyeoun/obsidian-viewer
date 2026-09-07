@@ -97,7 +97,7 @@ export class FileSystemNoteRepository implements NoteRepository {
 
     const { data, content } = matter(fileContent)
     const frontmatter = normalizeFrontmatter(data)
-    const html = await markdownToHtml(content, {
+    const { html, headings } = await markdownToHtml(content, {
       allSlugs,
       sourceSlug: slug,
       nameToSlugMap,
@@ -107,7 +107,7 @@ export class FileSystemNoteRepository implements NoteRepository {
     const tags = Array.from(new Set([...(frontmatter.tags ?? []), ...inlineTags]))
     const linkedSlugs = extractWikilinkSlugs(content, nameToSlugMap)
 
-    return createNote({ slug, frontmatter, rawContent: content, html, tags, linkedSlugs })
+    return createNote({ slug, frontmatter, rawContent: content, html, tags, linkedSlugs, headings })
   }
 
   // Design Ref: wikilink-image-embed §2.2 — 노트 파싱 중 수집된 이미지 임베드 파일명들을
