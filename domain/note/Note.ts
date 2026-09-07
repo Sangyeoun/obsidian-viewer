@@ -9,6 +9,14 @@ export interface NoteFrontmatter {
   readonly date?: string
 }
 
+// Design Ref: note-toc §3.1 — TOC 렌더링을 위한 목차 항목. H1~H4만 수집한다.
+export interface NoteHeading {
+  readonly depth: 1 | 2 | 3 | 4
+  readonly text: string
+  /** rehype-slug(github-slugger)와 동일한 규칙으로 생성된 앵커 id. 본문 heading의 id와 일치한다. */
+  readonly id: string
+}
+
 export interface Note {
   /** 파일명(확장자 제외)에서 유래한 고유 슬러그. 라우팅에 사용된다. */
   readonly slug: string
@@ -21,6 +29,8 @@ export interface Note {
   readonly tags: readonly string[]
   /** 이 노트가 위키링크로 참조하는 다른 노트들의 슬러그. */
   readonly linkedSlugs: readonly string[]
+  /** 본문에서 추출한 목차 데이터 (H1~H4). 헤딩이 없으면 빈 배열. */
+  readonly headings: readonly NoteHeading[]
 }
 
 export function createNote(params: {
@@ -30,6 +40,7 @@ export function createNote(params: {
   html: string
   tags: readonly string[]
   linkedSlugs: readonly string[]
+  headings: readonly NoteHeading[]
 }): Note {
   return {
     slug: params.slug,
@@ -38,6 +49,7 @@ export function createNote(params: {
     html: params.html,
     tags: params.tags,
     linkedSlugs: params.linkedSlugs,
+    headings: params.headings,
   }
 }
 

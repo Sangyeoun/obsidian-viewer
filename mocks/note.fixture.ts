@@ -11,6 +11,7 @@ export const mockNote: Note = {
   html: '<h1>Welcome</h1><p>이것은 목업 노트입니다.</p>',
   tags: ['intro', 'guide'],
   linkedSlugs: ['project-ideas'],
+  headings: [{ depth: 1, text: 'Welcome', id: 'welcome' }],
 }
 
 export const mockNotes: Note[] = [
@@ -22,5 +23,6 @@ export const mockNotes: Note[] = [
     html: '<h1>Project Ideas</h1><ul><li>검색 기능</li></ul>',
     tags: ['ideas', 'todo'],
     linkedSlugs: ['welcome'],
+    headings: [{ depth: 1, text: 'Project Ideas', id: 'project-ideas' }],
   },
 ]
