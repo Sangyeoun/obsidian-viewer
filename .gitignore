@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# vault 이미지 임베드 빌드 산출물 (wikilink-image-embed)
+/public/vault-assets/
+
 # production
 /build
 
@@ -40,3 +43,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# bkit local tool state
+/.bkit/

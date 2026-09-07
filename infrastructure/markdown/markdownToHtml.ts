@@ -4,18 +4,37 @@ import remarkRehype from 'remark-rehype'
 import rehypeSlug from 'rehype-slug'
 import rehypeStringify from 'rehype-stringify'
 import { remarkWikilink } from './remarkWikilink'
+import type { RemarkWikilinkOptions } from './remarkWikilink'
 import { remarkCallout } from './remarkCallout'
 import { remarkHashtag } from './remarkHashtag'
+
+export interface MarkdownToHtmlOptions {
+  /** vault 전체 노트 슬러그 집합. 위키링크 무결성 검사(FR-04)에 사용된다. */
+  readonly allSlugs?: RemarkWikilinkOptions['allSlugs']
+  readonly sourceSlug?: RemarkWikilinkOptions['sourceSlug']
+  /** 파일명 -> full slug 역매핑. 하위 폴더 노트를 가리키는 위키링크 해석에 사용된다. */
+  readonly nameToSlugMap?: RemarkWikilinkOptions['nameToSlugMap']
+  /** 이미지 임베드 발견 시 호출되는 콜백. vault-assets 복사 대상 수집에 사용된다. */
+  readonly onImageEmbed?: RemarkWikilinkOptions['onImageEmbed']
+}
 
 /**
  * markdownToHtml - Obsidian 마크다운 본문을 HTML 문자열로 변환한다.
  *
  * 처리 순서: GFM(표/체크리스트/취소선) -> 위키링크 -> 콜아웃 -> 해시태그 -> HTML 변환 -> 헤딩에 id 부여.
  */
-export async function markdownToHtml(markdown: string): Promise<string> {
+export async function markdownToHtml(
+  markdown: string,
+  options: MarkdownToHtmlOptions = {},
+): Promise<string> {
   const file = await remark()
     .use(remarkGfm)
-    .use(remarkWikilink)
+    .use(remarkWikilink, {
+      allSlugs: options.allSlugs,
+      sourceSlug: options.sourceSlug,
+      nameToSlugMap: options.nameToSlugMap,
+      onImageEmbed: options.onImageEmbed,
+    })
     .use(remarkCallout)
     .use(remarkHashtag)
     .use(remarkRehype, { allowDangerousHtml: false })
